@@ -1,0 +1,17 @@
+{
+    "defaultSeverity": "error",
+    "extends":["tslint:recommended","tslint-sonarts"],
+    "jsRules": {},
+    "rules": {
+        "no-console": false,
+        "max-line-length": [
+            false
+        ],
+        "max-classes-per-file": [
+            false
+        ],
+        "semicolon": [false],
+        "no-trailing-whitespace": [false]
+    },
+    "rulesDirectory": []
+}

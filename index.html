@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game of Life</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
+          integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.12/css/all.css"
+          integrity="sha384-G0fIWCsCzJIMAVNQPfjH08cyYaUtMwjJwqiRKxxE/rx96Uroj1BtIQ6MLJuheaO9" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+    <script src="dist/bundle.js"></script>
+</head>
+<body>
+<h4 class="text-center">Game of Life</h4>
+<div class="main-controls" id="controls-wrap">
+    <div class="controls-left">
+        <button id="showSettings" title="Settings"><i class="fas fa-sliders-h"></i></button>
+    </div>
+    <div class="controls-center btn-group">
+        <button id="stepBtn" class="btn text-warning" title="Step"><i class="fas fa-step-forward"></i></button>
+        <button id="runBtn" class="btn text-success" title="Run"><i class="fas fa-play"></i></button>
+        <button id="resetBtn" class="btn text-primary" title="Reset"><i class="fas fa-undo-alt"></i></button>
+        <button id="clearBtn" class="btn text-danger" title="Clear"><i class="fas fa-trash-alt"></i></button>
+    </div>
+    <div class="controls-right">
+        <button id="showBlueprints" title="Blueprints"><i class="fas fa-cubes"></i></button>
+    </div>
+</div>
+<div class="sidebar sidebar--left hidden" id="settings">
+    <div class="sidebar_title">
+        <button id="closeSettings" title="Close" class="no-padding"><i class="fas fa-times"></i></button>
+        <h4 class="align-right">Settings</h4>
+    </div>
+    <hr>
+    <div class="form-group">
+        <label for="resolutionSlider" id="resolutionSliderLabel">Resolution: 10</label>
+        <input title="Cell resolution" type="range" class="form-control-range custom-range" id="resolutionSlider" max="30" min="1" value="10">
+    </div>
+
+    <div class="form-group">
+        <label for="fpsSlider" id="fpsSliderLabel">FPS: 24</label>
+        <input title="Game update speed" type="range" class="form-control-range custom-range" id="fpsSlider" max="60" min="1" value="24">
+    </div>
+
+    <div class="custom-control custom-checkbox">
+        <input type="checkbox" class="custom-control-input" id="gridCb" checked="true">
+        <label class="custom-control-label" for="gridCb">Draw grid</label>
+    </div>
+
+    <div class="custom-control custom-checkbox">
+        <input type="checkbox" class="custom-control-input" id="snapCb" checked="true">
+        <label class="custom-control-label" for="snapCb">Snap to grid</label>
+    </div>
+
+    <div class="custom-control custom-checkbox">
+        <input type="checkbox" class="custom-control-input" id="infoCb">
+        <label class="custom-control-label" for="infoCb">Display info</label>
+    </div>
+
+    <br>
+    <div class="row">
+        <div class="col">
+            <input type="button" class="btn btn-success d-inline-block button-small" value="Apply"
+                   id="applySettingsBtn">
+        </div>
+    </div>
+</div>
+<div class="sidebar sidebar--right hidden" id="blueprints">
+    <div class="sidebar_title">
+        <h4>Blueprints</h4>
+        <button id="closeBlueprints" title="Close" class="no-padding align-right"><i class="fas fa-times"></i></button>
+    </div>
+    <hr>
+    <div>
+        <p id="selectedBlueprintLabel" class="d-inline-block">Selected blueprint: None</p>
+        <button id="clearBlueprintBtn" title="Close" class="no-padding align-right"><i class="fas fa-minus-circle"></i></button>
+    </div>
+    <div class="list-group blueprints-list" id="blueprintsList" role="tablist">
+    </div>
+    <br>
+    <div class="row">
+        <div class="col">
+            <input type="button" class="btn btn-primary d-inline-block button-small" value="Load" id="loadBlueprintBtn" data-toggle="modal" data-target="#exampleModal">
+        </div>
+    </div>
+</div>
+<div class="main-content">
+    <canvas id="canvas" oncontextmenu="return false;"></canvas>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add new blueprint</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <textarea id="rleContents" style="width: 100%; min-height: 300px;" placeholder="Paste the RLE encoded pattern in here"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="addNewBlueprint">Add</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>

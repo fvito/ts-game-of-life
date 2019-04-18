@@ -1,0 +1,93 @@
+canvas {
+    border: solid 1px gray;
+}
+
+.controls-left {
+    float: left;
+}
+
+.controls-center {
+    text-align: center;
+    /*display: inline-block;*/
+}
+
+.main-controls {
+    text-align: center;
+}
+
+.controls-right {
+    float: right;
+}
+
+.sidebar * {
+    display: block;
+}
+
+.sidebar {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    background: whitesmoke;
+    overflow-x: hidden;
+    padding-top: 40px;
+    transition: 0.5s;
+}
+
+.sidebar--left {
+    left: 0;
+}
+
+.sidebar--right {
+    right: 0;
+}
+
+.sidebar_title * {
+    display: inline-block;
+}
+
+.sidebar.shown {
+    width: 300px;
+    padding: 40px 10px 10px 10px;
+}
+
+.sidebar.hidden {
+    width: 0;
+}
+
+
+button {
+    background: none;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 1.3em;
+}
+
+.btn {
+    border: solid 1px #cacaca;
+}
+
+.button-small {
+    width: 100px;
+}
+
+.align-right {
+    float: right;
+}
+
+.align-left {
+    float: left;
+}
+
+.no-padding {
+    padding: 0;
+}
+.blueprints-list {
+    height: 75%;
+    overflow-y: scroll;
+}
+
+
+

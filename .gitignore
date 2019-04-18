@@ -1,0 +1,7 @@
+.idea/*
+.nyc_output/*
+.scannerwork/*
+coverage/*
+plato/*
+node_modules/*
+*.lock
